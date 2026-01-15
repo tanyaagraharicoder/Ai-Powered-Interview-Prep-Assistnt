@@ -1,14 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require ("mongoose");
 
-const questionSchema = new mongoose.Schema(
-  {
-    session: { type: mongoose.Schema.Types.ObjectId, ref: "Session" },
-    question: String,
-    answer: String,
-    note: String,
-    isPinned: { type: Boolean, default: false },
-  },
-  { timestamp: true }
-);
+const questionSchema = new mongoose.Schema({
+    session:{type: mongoose.Schema.Type.ObjectId, ref:"Session"},
+    question:String,
+    answer:String,
+    note:String,
+    isPinned:{type:Boolean,default:false},
 
-module.exports = mongoose.model("Question", questionSchema);
+
+},{timestamps:true});
+module.exports= mongoose.model("Question",questionSchema);
