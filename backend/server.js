@@ -5,6 +5,9 @@ const path= require("path");
 const connectDB= require("./config/db")
 const authRoutes = require("./routes/authRoutes");
 const sessionRoutes = require('./routes/sessionRoutes');
+const questionRoutes= require('./routes/questionRoutes');
+
+
 
 
 
@@ -31,7 +34,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use('/api/sessions',sessionRoutes);
-// app.use('/api/questions',questionRoutes);
+app.use('/api/questions',questionRoutes);
 
 // api.use("/api/ai/generate-questions",protect,generateInterQuestions);
 // app.use("/api/ai/generate-explanation",protect, generateConceptExplanations);
