@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
@@ -24,6 +25,17 @@ const Login = ({ setCurrentPage }) => {
     setError("")
     // Login Api call
     try {
+      const response= await axiosInstance.post(API_PATHS.AUTH.LOGIN,{
+        email,
+        password,
+      })
+      const {token}=response.date;
+      if(token){
+        localStorage.setItem("token",token);
+        navigate("/dashboard");
+      }
+
+      
 
       
     } catch (error) {
