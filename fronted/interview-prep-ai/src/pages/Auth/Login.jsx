@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { UserContext } from "../../context/userContext";
 
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+const { updateUser } = useContext(UserContext);
+
 
   const navigate = useNavigate();
   // Handle login from submit
@@ -24,30 +28,27 @@ const Login = ({ setCurrentPage }) => {
     }
     setError("")
     // Login Api call
-    try {
-      const response= await axiosInstance.post(API_PATHS.AUTH.LOGIN,{
-        email,
-        password,
-      })
-      const {token}=response.date;
-      if(token){
-        localStorage.setItem("token",token);
-        navigate("/dashboard");
-      }
+   try {
+  const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+    email,
+    password,
+  });
 
-      
+  const { token } = response.data;
 
-      
-    } catch (error) {
-      if(error.response && error.response.data.message){
-        setError(error.response.data.message);
-      }else{
-        setError("SomeThing went wrong. Please try again.")
-      }
-      
-    }
+  if (token) {
+    localStorage.setItem("token", token);
+    updateUser(response.data);
 
-
+    navigate("/dashboard");
+  }
+} catch (error) {
+  if (error.response?.data?.message) {
+    setError(error.response.data.message);
+  } else {
+    setError("Something went wrong. Please try again.");
+  }
+}
 
 
 
@@ -56,9 +57,9 @@ const Login = ({ setCurrentPage }) => {
   };
 
   return (
-    <div className="w-[90vw] md:w-[37vw] p-7 flex flx-col justify-center">
+    <div className="w-[90vw] md:w-[37vw] p-7 flex flex-col justify-center">
       <h3 className="text-lg font-semibold text-black">Welcome Back</h3>
-      <p className="rext-xs text-slate-700 mt-[5px] mb-6">
+      <p className="text-xs text-slate-700 mt-[5px] mb-6">
         Please enter your details to log in
       </p>
       <form onSubmit={handleLogin}>
